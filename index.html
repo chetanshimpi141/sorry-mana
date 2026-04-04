@@ -2,113 +2,134 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Sorry Mau ❤️</title>
+  <title>For Mau ❤️</title>
 
   <style>
     body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(to right, #1e1e2f, #3a3a5a);
+      color: white;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       text-align: center;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to right, #ff9a9e, #fad0c4);
       overflow: hidden;
-      margin-top: 100px;
     }
 
-    h1 {
-      color: #fff;
-      font-size: 40px;
-    }
-
-    p {
-      color: #fff;
-      font-size: 20px;
+    #container {
+      max-width: 600px;
     }
 
     button {
-      padding: 15px 25px;
-      font-size: 18px;
-      margin: 20px;
+      padding: 12px 20px;
+      margin: 10px;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       cursor: pointer;
-      position: relative;
+      font-size: 16px;
     }
 
-    #yesBtn {
-      background-color: #28a745;
+    #forgiveBtn {
+      background: #4CAF50;
       color: white;
     }
 
-    #noBtn {
-      background-color: #dc3545;
+    #waitBtn {
+      background: #ff9800;
       color: white;
-      position: absolute;
     }
 
-    .heart {
+    canvas {
       position: absolute;
-      color: red;
-      font-size: 20px;
-      animation: float 5s linear infinite;
-    }
-
-    @keyframes float {
-      0% {
-        transform: translateY(100vh);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-10vh);
-        opacity: 0;
-      }
+      top: 0;
+      left: 0;
+      z-index: -1;
     }
   </style>
 </head>
 
 <body>
 
-  <h1>Mau, I am really sorry 🥺❤️</h1>
-  <p>I know I made a mistake... but you mean everything to me 💖</p>
-  <p>Please forgive me, I promise I will make it right 🙏</p>
+<canvas id="stars"></canvas>
 
-  <button id="yesBtn" onclick="forgive()">Yes ❤️</button>
-  <button id="noBtn">No 😒</button>
+<div id="container">
+  <h1 id="message"></h1>
+  <p id="subtext"></p>
 
-  <script>
-    const noBtn = document.getElementById("noBtn");
+  <button id="forgiveBtn" onclick="forgive()">Forgive ❤️</button>
+  <button id="waitBtn" onclick="wait()">Still Angry 😒</button>
+</div>
 
-    noBtn.addEventListener("mouseover", () => {
-      const x = Math.random() * (window.innerWidth - 100);
-      const y = Math.random() * (window.innerHeight - 50);
+<audio autoplay loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mp3">
+</audio>
 
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
+<script>
+  const message = document.getElementById("message");
+  const subtext = document.getElementById("subtext");
+
+  // Dynamic time-based message
+  const hour = new Date().getHours();
+
+  let mainText = "";
+  if (hour >= 20 || hour < 6) {
+    mainText = "Mau... I know it's late, but I couldn't sleep without saying sorry 🥺";
+  } else {
+    mainText = "Mau, I know I messed up... and I'm really sorry ❤️";
+  }
+
+  // Typing effect
+  let i = 0;
+  function typeWriter() {
+    if (i < mainText.length) {
+      message.innerHTML += mainText.charAt(i);
+      i++;
+      setTimeout(typeWriter, 50);
+    }
+  }
+  typeWriter();
+
+  subtext.innerText = "You mean too much to me to lose over my mistake.";
+
+  function forgive() {
+    document.body.innerHTML = "<h1>Thank you Mau ❤️ I promise I'll be better 😭</h1>";
+  }
+
+  function wait() {
+    subtext.innerText = "I understand... I'll wait. But I won't give up on us ❤️";
+  }
+
+  // Star background animation
+  const canvas = document.getElementById("stars");
+  const ctx = canvas.getContext("2d");
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  let stars = [];
+
+  for (let i = 0; i < 100; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 2
     });
+  }
 
-    function forgive() {
-      document.body.innerHTML = `
-        <h1 style="color:white;">Yayyy! ❤️</h1>
-        <p style="color:white; font-size:24px;">I love you Mau 😍</p>
-      `;
-    }
+  function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "white";
+    stars.forEach(star => {
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  }
 
-    // Floating hearts
-    function createHeart() {
-      const heart = document.createElement("div");
-      heart.classList.add("heart");
-      heart.innerHTML = "❤️";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.fontSize = Math.random() * 20 + 10 + "px";
-      heart.style.animationDuration = Math.random() * 3 + 2 + "s";
-
-      document.body.appendChild(heart);
-
-      setTimeout(() => {
-        heart.remove();
-      }, 5000);
-    }
-
-    setInterval(createHeart, 300);
-  </script>
+  setInterval(drawStars, 50);
+</script>
 
 </body>
 </html>
