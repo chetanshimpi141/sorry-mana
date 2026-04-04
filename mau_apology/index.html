@@ -23,8 +23,10 @@ body {
   z-index: 1;
 }
 
-h1 {
-  min-height: 60px;
+img {
+  width: 250px;
+  border-radius: 15px;
+  margin-bottom: 20px;
 }
 
 button {
@@ -36,7 +38,6 @@ button {
   font-size: 16px;
 }
 
-/* Pulse animation */
 #forgiveBtn {
   background: #4CAF50;
   color: white;
@@ -58,7 +59,6 @@ button {
   transition: opacity 0.4s ease;
 }
 
-/* Canvas background */
 canvas {
   position: absolute;
   top: 0;
@@ -72,6 +72,7 @@ canvas {
 <canvas id="stars"></canvas>
 
 <div id="container">
+  <img id="slideshow">
   <h1 id="message"></h1>
   <p id="subtext"></p>
 
@@ -79,32 +80,45 @@ canvas {
   <button id="waitBtn" onclick="wait()">Still Angry 😒</button>
 </div>
 
-<!-- Music -->
 <audio id="bgMusic" loop>
   <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mp3">
 </audio>
 
 <script>
-const name = "Mau";
-const message = document.getElementById("message");
-const subtext = document.getElementById("subtext");
 
-// ✅ MUSIC FIX (requires interaction)
+// 🔐 PASSWORD LOCK
+const password = prompt("Only Mau can open this ❤️ Enter password:");
+
+if (password !== "mau@1424") {
+  document.body.innerHTML = "<h1>Access Denied 💔</h1>";
+}
+
+// 🎵 MUSIC FIX
 document.body.addEventListener("click", () => {
   document.getElementById("bgMusic").play();
 }, { once: true });
 
-// ✅ TIME BASED MESSAGE
-const hour = new Date().getHours();
-let mainText = "";
+// 📸 SLIDESHOW
+const images = ["photo1.jpg","photo2.jpg","photo3.jpg"];
+let imgIndex = 0;
 
-if (hour >= 20 || hour < 6) {
-  mainText = `${name}... I know it's late, but I couldn't sleep without saying sorry 🥺`;
-} else {
-  mainText = `${name}, I know I messed up... and I'm really sorry ❤️`;
+function changeImage() {
+  document.getElementById("slideshow").src = images[imgIndex];
+  imgIndex = (imgIndex + 1) % images.length;
 }
+setInterval(changeImage, 2000);
+changeImage();
 
-// ✅ TYPEWRITER EFFECT
+// 💬 MESSAGE
+const name = "Mau";
+const message = document.getElementById("message");
+const subtext = document.getElementById("subtext");
+
+const hour = new Date().getHours();
+let mainText = (hour >= 20 || hour < 6)
+  ? `${name}... I couldn't sleep without saying sorry 🥺`
+  : `${name}, I know I messed up... I'm really sorry ❤️`;
+
 let i = 0;
 function typeWriter() {
   if (i < mainText.length) {
@@ -117,25 +131,17 @@ typeWriter();
 
 subtext.innerText = "You mean too much to me to lose over my mistake.";
 
-// ✅ FORGIVE BUTTON
-function forgive() {
-  document.body.innerHTML = `
-    <h1>Thank you ${name} ❤️</h1>
-    <p>I promise I’ll never make you feel this way again.</p>
-  `;
-}
-
-// ✅ STILL ANGRY FLOW
+// 😒 STILL ANGRY FLOW
 let step = 0;
 
 function wait() {
   const messages = [
     "I understand... you have every right to be upset 😔",
     "I’m not here to force you… just to say I’m truly sorry ❤️",
-    "Take your time, Mau. I’ll be right here… waiting.",
-    "No matter how long it takes, you’re worth it for me 💖",
+    "Take your time, Mau. I’ll wait.",
+    "No matter how long it takes, you’re worth it 💖",
     "I won’t repeat this mistake… I promise.",
-    "Even if you’re angry… I still care about you the same ❤️"
+    "Even if you’re angry… I still care about you ❤️"
   ];
 
   subtext.style.opacity = 0;
@@ -146,13 +152,21 @@ function wait() {
       step++;
     } else {
       subtext.innerText =
-        "I’ll stop bothering you now… but I’ll still be here whenever you’re ready 💔";
+        "I’ll stop bothering you now… but I’ll still be here 💔";
     }
     subtext.style.opacity = 1;
   }, 300);
 }
 
-// ✅ STAR BACKGROUND
+// 💌 WHATSAPP REDIRECT
+function forgive() {
+  const phone = "917757910427"; // replace
+  const msg = encodeURIComponent("Thank you Mau ❤️ I promise I'll fix everything.");
+
+  window.location.href = `https://wa.me/${phone}?text=${msg}`;
+}
+
+// ⭐ STARS
 const canvas = document.getElementById("stars");
 const ctx = canvas.getContext("2d");
 
@@ -182,11 +196,6 @@ function drawStars() {
 
 setInterval(drawStars, 50);
 
-// Resize fix
-window.addEventListener("resize", () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-});
 </script>
 
 </body>
