@@ -23,10 +23,11 @@ body {
   z-index: 1;
 }
 
-img {
+#slideshow {
   width: 250px;
   border-radius: 15px;
   margin-bottom: 20px;
+  transition: opacity 0.5s ease;
 }
 
 button {
@@ -72,7 +73,7 @@ canvas {
 <canvas id="stars"></canvas>
 
 <div id="container">
-  <img id="slideshow">
+  <img id="slideshow" src="photo1.jpg">
   <h1 id="message"></h1>
   <p id="subtext"></p>
 
@@ -86,10 +87,10 @@ canvas {
 
 <script>
 
-// 🔐 PASSWORD LOCK
+// 🔐 PASSWORD
 const password = prompt("Only Mau can open this ❤️ Enter password:");
 
-if (password !== "mau@1424") {
+if (password !== "mau@1425") {
   document.body.innerHTML = "<h1>Access Denied 💔</h1>";
 }
 
@@ -103,11 +104,18 @@ const images = ["photo1.jpg","photo2.jpg","photo3.jpg"];
 let imgIndex = 0;
 
 function changeImage() {
-  document.getElementById("slideshow").src = images[imgIndex];
-  imgIndex = (imgIndex + 1) % images.length;
+  const img = document.getElementById("slideshow");
+
+  img.style.opacity = 0;
+
+  setTimeout(() => {
+    img.src = images[imgIndex];
+    imgIndex = (imgIndex + 1) % images.length;
+    img.style.opacity = 1;
+  }, 300);
 }
+
 setInterval(changeImage, 2000);
-changeImage();
 
 // 💬 MESSAGE
 const name = "Mau";
@@ -160,13 +168,13 @@ function wait() {
 
 // 💌 WHATSAPP REDIRECT
 function forgive() {
-  const phone = "917757910427"; // replace
+  const phone = "917757910427";
   const msg = encodeURIComponent("Thank you Mau ❤️ I promise I'll fix everything.");
 
   window.location.href = `https://wa.me/${phone}?text=${msg}`;
 }
 
-// ⭐ STARS
+// ⭐ STARS BACKGROUND
 const canvas = document.getElementById("stars");
 const ctx = canvas.getContext("2d");
 
